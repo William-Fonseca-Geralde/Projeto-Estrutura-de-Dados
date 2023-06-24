@@ -1,5 +1,4 @@
 #include <iostream>
-#include <fstream>
 #include <cstring>
 #include "urna.h"
 using namespace std;
@@ -18,7 +17,8 @@ int main() {
     cout << "\t1 - Cadastro de Candidatos;\n";
     cout << "\t2 - Cadastro de Eleitores;\n";
     cout << "\t3 - Registro de Voto;\n";
-    cout << "\t4 - Sair do Programa.\n";
+    cout << "\t4 - Gerar Relatorio Geral;\n";
+    cout << "\t5 - Sair do Programa.\n";
     cout << "\nDigite uma das opcoes: ";
     cin >> opcao;
 
@@ -109,7 +109,7 @@ int main() {
           err = verificaApto(titu);
           if (err == true) {
             cout << "O eleitor nao esta apto\n";
-            cout << "\nExistem eleitores na fila? (s / n)";
+            cout << "\nExistem eleitores na fila? (s / n) ";
             cin >> resp;
           } else {
             do {
@@ -130,13 +130,17 @@ int main() {
             } while (valor == 0);
           }
         } while (resp == 's' || resp == 'S');
-
-        arq.open("RelatorioEleicao.txt");
-        mostrarVencedor();
-        arq.close();
       }
     break;
     case 4:
+      system("cls");
+      cout << "Arquivo gerado\n";
+      arq.open("RelatorioEleicao.txt");
+      mostrarVencedor();
+      arq.close();
+      system("Pause");
+    break;
+    case 5:
       system("cls");
       cout << "Saindo do Programa...";
     break;

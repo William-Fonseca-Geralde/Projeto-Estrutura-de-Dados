@@ -37,8 +37,6 @@ static listaEleit cabecaE = NULL;
 static listaEleit raboE = NULL;
 static listaEleit tempE = NULL;
 
-int numTotalEleit, numTotalCandidatos;
-
 /*Candidatos*/
 bool estaVazioCandidato();
 bool umCandidato();
@@ -125,8 +123,6 @@ bool removerCandidato(int numero){
 }
 
 void mostrarCandidatos(){
-  numTotalCandidatos = 0;
-
   arq << "***************LISTA DE CANDIDATOS***************\n";
   arq << endl;
 
@@ -134,12 +130,9 @@ void mostrarCandidatos(){
     arq << "Nome: " << tempC->nome << '\n';
     arq << "Numero dele: " << tempC->num << '\n';
     arq << '\n';
-    numTotalCandidatos++;
   }
   tempC = NULL;
   delete tempC;
-
-  arq << "Tem " << numTotalCandidatos << " candidatos";
 }
 
 
@@ -189,25 +182,30 @@ bool verificaApto(long long int titu){
 }
 
 void mostrarEleitores(){
-  numTotalEleit = 0;
-
   arq << "***************LISTA DE ELEITORES***************\n";
   arq << endl;
 
   for (tempE = cabecaE; tempE != NULL; tempE = tempE->prox) {
     arq << "Nome: " << tempE->nome << '\n';
     arq << "Titulo: " << tempE->titulo << '\n';
-    numTotalEleit++;
     arq << '\n';
   }
   tempE = NULL;
   delete tempE;
-
-  arq << "Tem " << numTotalEleit << " Eleitores";
 }
 
 bool verificarQuantEleitor(){
-  if (numTotalCandidatos >= numTotalEleit/2.5)
+  int numTotalCandidatos = 0, numTotalEleit = 0;
+
+  for (tempC = cabecaC; tempC != NULL; tempC = tempC->prox) {
+    numTotalCandidatos++;
+  }
+
+  for (tempE = cabecaE; tempE != NULL; tempE = tempE->prox) {
+    numTotalEleit++;
+  }
+
+  if (numTotalCandidatos >= numTotalEleit/2)
     return true;
   else
     return false;
@@ -236,6 +234,7 @@ bool inserirVoto(int numero){
         for (tempV = cabecaV; tempV != NULL; tempV = tempV->prox) {
           if (tempV->numCand == numero) {
             tempV->quantVotos++;
+            /*
             if (tempV != cabecaV) {
               tempV->prox->ante = tempV->prox;
               tempV->ante->prox = tempV->ante;
@@ -248,6 +247,7 @@ bool inserirVoto(int numero){
               tempV->ante = NULL;
               tempV->prox = cabecaV;
             }
+            */
             break;
           } else if (tempV->numCand != numero && tempV->prox == NULL) {
             tempV = new noVoto;
@@ -280,7 +280,7 @@ bool inserirVoto(int numero){
 }
 
 void mostrarVencedor(){
-  int numTotalVotos = 0;
+  int numTotalEleit = 0, numTotalVotos = 0;
 
   arq << "***************RELATORIO DA ELEICAO***************\n";
   arq << endl;
@@ -288,12 +288,14 @@ void mostrarVencedor(){
   for (tempV = cabecaV; tempV->prox != NULL; tempV = tempV->prox) {
     arq << "Nome do Candidato: " << tempV->nomeCand << "\tNumero: " << tempV->numCand << '\n';
     arq << "Quantidade de Votos: " << tempV->quantVotos << '\n';
-    numTotalVotos++;
     arq << '\n';
+    numTotalVotos++;
   }
-  tempV = NULL;
-  delete tempV;
-  
+
+  for (tempE = cabecaE; tempE->prox != NULL; tempE = tempE->prox) {
+    numTotalEleit++;
+  }
+
   arq << endl << endl;
   arq << "Quantidade de votos: " << numTotalVotos << '\n';
   if (numTotalEleit != numTotalVotos) {
@@ -301,4 +303,7 @@ void mostrarVencedor(){
   } else {
     arq << "Todos os Eleitores compareceram nessa eleicao";
   }
+
+  tempV = NULL;
+  delete tempV;
 }
