@@ -115,11 +115,6 @@ bool removerCandidato(int numero){
 
     removC->ante = NULL;
     removC->prox = NULL;
-
-    if (raboC == cabecaC) {
-      delete raboC;
-      delete cabecaC;
-    }
     
     erro = false;
   }
@@ -141,6 +136,8 @@ void mostrarCandidatos(){
     arq << '\n';
     numTotalCandidatos++;
   }
+  tempC = NULL;
+  delete tempC;
 
   arq << "Tem " << numTotalCandidatos << " candidatos";
 }
@@ -185,6 +182,8 @@ bool verificaApto(long long int titu){
       break;
     }
   }
+  tempE = NULL;
+  delete tempE;
 
   return apto;
 }
@@ -201,12 +200,14 @@ void mostrarEleitores(){
     numTotalEleit++;
     arq << '\n';
   }
+  tempE = NULL;
+  delete tempE;
 
   arq << "Tem " << numTotalEleit << " Eleitores";
 }
 
 bool verificarQuantEleitor(){
-  if (numTotalCandidatos <= numTotalEleit/2.5)
+  if (numTotalCandidatos >= numTotalEleit/2.5)
     return true;
   else
     return false;
@@ -216,7 +217,7 @@ bool verificarQuantEleitor(){
 bool inserirVoto(int numero){
   bool encontr;
 
-  for ( tempC = cabecaC; tempC != NULL; tempC = tempC->prox) {
+  for (tempC = cabecaC; tempC != NULL; tempC = tempC->prox) {
     if (tempC->num == numero) {
       encontr = false;
 
@@ -264,7 +265,6 @@ bool inserirVoto(int numero){
       raboV = tempV;
 
       tempV = NULL;
-
       delete tempV;
 
       break;
@@ -273,6 +273,8 @@ bool inserirVoto(int numero){
       break;
     }
   }
+  tempC = NULL;
+  delete tempC;
   
   return encontr;
 }
@@ -289,6 +291,8 @@ void mostrarVencedor(){
     numTotalVotos++;
     arq << '\n';
   }
+  tempV = NULL;
+  delete tempV;
   
   arq << endl << endl;
   arq << "Quantidade de votos: " << numTotalVotos << '\n';
